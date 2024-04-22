@@ -16,10 +16,14 @@ frappe.ui.form.on("Withdrawal Request", {
     refresh(frm) {
         setTimeout(() => {
             frm.page.actions.find(`[data-label='Help']`).parent().parent().remove();
+            frm.page.btn_secondary.hide(); // hidden Cancel Button
         }, 500);
 
         $(frm.fields_dict["timeline_html"].wrapper).html("");
-        frm.set_df_property("timeline_section", "hidden", true);
+        frm.set_df_property("timeline_section", "hidden", true);            
+
+        if (frappe.user.has_role('Finance Officer'))
+        frm.set_df_property('financial_status', 'read_only', false);
 
 
         if (!frm.is_new()) {
